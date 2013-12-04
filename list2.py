@@ -40,7 +40,7 @@ def linear_merge(list1, list2):
     if e1 > e2:
       if len(new_list) > 0:
         if new_list[-1] > e2:
-          new_list = [new_list[0]] + [e2] + [new_list.pop()] + [e1]
+          new_list = [new_list[:-1]] + [e2] + [new_list[-1]] + [e1]
         else:
           new_list = new_list + [e2] + [e1]
       else:
@@ -49,7 +49,7 @@ def linear_merge(list1, list2):
     else:
       if len(new_list) > 0:
         if new_list[-1] > e1:
-          new_list = [new_list[0]] + [e1] + [new_list.pop()] + [e2]
+          new_list = [new_list[:-1]] + [e1] + [new_list[-1]] + [e2]
         else:
           new_list = new_list + [e1] + [e2]
       else:
