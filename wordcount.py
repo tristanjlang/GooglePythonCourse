@@ -45,6 +45,17 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
+def read_file(filename):
+    f = open(filename, 'rU')
+    text = f.read()
+    text = text.lower()
+    words = {}
+    # deal with punctuation?
+    # use regular expression re.findall(...) to get this done
+    # look through google course to try to figure out RE, then look at next line
+    # RE solution here = http://stackoverflow.com/questions/1059559/python-strings-split-with-multiple-separators
+    
+
 def print_words(filename):
     #d
 
