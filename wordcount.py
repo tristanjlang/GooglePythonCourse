@@ -38,6 +38,7 @@ print_words() and print_top().
 """
 
 import sys
+import re
 
 # +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
@@ -45,22 +46,45 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
-def read_file(filename):
+def file_to_word_dict(filename):
     f = open(filename, 'rU')
-    text = f.read()
-    text = text.lower()
-    words = {}
-    # deal with punctuation?
-    # use regular expression re.findall(...) to get this done
-    # look through google course to try to figure out RE, then look at next line
-    # RE solution here = http://stackoverflow.com/questions/1059559/python-strings-split-with-multiple-separators
+    '''
+    START CODE THAT USES .split() AS SUGGESTED BY INSTRUCTIONS, BUT I WANTED TO TRY DOING THIS WITH REGEX
     
+    #text = f.read()
+    #text = text.lower()
+    #word_list = text.split()
+    '''
+    word_list = re.findall(r'\b\S+\b', f.read().lower())
+    
+    words = {}
+    for word in word_list:
+        if word in words:
+            words[word] += 1
+        else:
+            words[word] = 1
+    return words
+
+def sort_dict_by_key(dict):
+    return sorted(dict.items(), key = lambda t:t[0])
+
+def sort_dict_by_value(dict):
+    return sorted(dict.items(), key = lambda t:t[1], reverse=True)
 
 def print_words(filename):
-    #d
+    words = sort_dict_by_key(file_to_word_dict(filename))
+    for word_tuple in words:
+        print word_tuple[0] + ' ' + str(word_tuple[1])
 
 def print_top(filename):
-    #d
+    count = 0
+    words = sort_dict_by_value(file_to_word_dict(filename))
+    for word_tuple in words:
+        if count < 20:
+            print word_tuple[0] + ' ' + str(word_tuple[1])
+            count += 1
+        else:
+            break
 
 ###
 
