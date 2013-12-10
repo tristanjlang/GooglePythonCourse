@@ -1,0 +1,13 @@
+D. verbing
+-pretty much the same
+-my code had return after each part of if statement
+-solution set result variable and returned result only at end
+
+E. not_bad
+-ONE MAJOR OVERSIGHT IN MY CODE that solution had
+==> i forgot to check for the case of not finding 'not' or 'bad'
+==> to address this, solution made sure both indexes were != -1
+
+F. front_back
+-solution was slightly more efficient by starting with lengths already divided by 2 to find the approx middle
+-because of this, it only needed to check for if length % 2 == 1, and then add 1 to the approx middle

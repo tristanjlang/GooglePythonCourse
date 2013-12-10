@@ -1,0 +1,12 @@
+A. Donuts
+-my code was the same as the solution
+
+B. both_ends
+-my code was almost the same as the solution
+-only difference is that I did not declare variables, just returned
+
+C. fix_start
+-same as B
+
+D. MixUp
+-same as B
