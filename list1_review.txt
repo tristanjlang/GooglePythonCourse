@@ -1,0 +1,11 @@
+A. match_ends
+-exact same code as solution
+
+B. front_x
+-slight oversight in my code
+==> my code checks for word[0], but this runs into trouble if word = ''
+==> to combat this, the solution used word.startswith('x')
+
+C. sort_last
+-pretty much the same code as the solution
+-solution used sorted(list), while i used list.sort(), return list

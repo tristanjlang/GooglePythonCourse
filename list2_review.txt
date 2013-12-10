@@ -1,0 +1,12 @@
+D. condense adjacent
+-i think i did something slightly more efficient than the solution in one part and the solution was more efficient than my code in another way
+-i think it was better to check len(nums)>0 at first because it is only checked once in the case of my code
+-however, one thing the solution did better than i did was track the previous number
+==> the solution used result[-1] to get the last number in the new list, while i stored the value in a new variable, previous
+
+E. linear merge
+-upon first glance my code is very different from the solution
+-however, this is because the solution only handles adding one new element at a time
+-instead, my solution handles two new elements at the same time (which admittedly makes the code more complicated)
+-BUT, i believe this makes my code more efficient than the solution because i go through both lists simultaneously and loop only as many times as the shorter list, AT MOST
+-COMPARATIVELY, the solution effectively goes through the loop as many times as the length of the shorter list, AT BEST, and twice as many times, AT WORST
