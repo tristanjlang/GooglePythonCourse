@@ -42,8 +42,7 @@ def extract_names(filename):
     """
     f = open(filename, 'rU')
     file_text = f.read()
-    match = re.match(r'....</h3>', file_text)
-    print match
+    match = re.search(r'\d\d\d\d</h3>', file_text)
     if match:
         print match.group()[0:4]
     else:
