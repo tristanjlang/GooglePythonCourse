@@ -27,8 +27,8 @@ Here's what the html looks like in the baby.html files:
 ...
 
 Suggested milestones for incremental development:
- -Extract the year and print it
- -Extract the names and rank numbers and just print them
+XX -Extract the year and print it
+XX -Extract the names and rank numbers and just print them
  -Get the names data into a dict and print it
  -Build the [year, 'name rank', ... ] list and print it
  -Fix main() to use the extract_names list
@@ -42,11 +42,15 @@ def extract_names(filename):
     """
     f = open(filename, 'rU')
     file_text = f.read()
-    match = re.search(r'\d\d\d\d</h3>', file_text)
-    if match:
-        print match.group()[0:4]
+    year = re.search(r'\d\d\d\d</h3>', file_text)
+    if year:
+        print year.group()[0:4]
     else:
         print 'ERROR: year not found'
+    #[\d\w]*</td> ==> gets the digit and the names and the </td> but need to remove the tag now
+    html_rank_names = re.findall(r'[\d\w]*</td>', file_text)
+    for item in html_rank_names:
+        print item[0:-5]
 
 extract_names('baby1990.html')
 
