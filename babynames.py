@@ -29,9 +29,9 @@ Here's what the html looks like in the baby.html files:
 Suggested milestones for incremental development:
 XX -Extract the year and print it
 XX -Extract the names and rank numbers and just print them
- -Get the names data into a dict and print it
- -Build the [year, 'name rank', ... ] list and print it
- -Fix main() to use the extract_names list
+XX -Get the names data into a dict and print it
+XX -Build the [year, 'name rank', ... ] list and print it
+XX -Fix main() to use the extract_names list
 """
 
 def extract_names(filename):
@@ -42,17 +42,43 @@ def extract_names(filename):
     """
     f = open(filename, 'rU')
     file_text = f.read()
-    year = re.search(r'\d\d\d\d</h3>', file_text)
+    f.close()
+    
+    year = re.search(r'Popularity in \d\d\d\d', file_text)
     if year:
-        print year.group()[0:4]
+        year = year.group()[-4:]
     else:
-        print 'ERROR: year not found'
-    #[\d\w]*</td> ==> gets the digit and the names and the </td> but need to remove the tag now
-    html_rank_names = re.findall(r'[\d\w]*</td>', file_text)
-    for item in html_rank_names:
-        print item[0:-5]
-
-extract_names('baby1990.html')
+        print 'ERROR: year not found in ' + filename
+    
+    html_rank_names = re.findall(r'<tr align="right"><td>\d+</td><td>\w+</td><td>\w+</td>', file_text)
+    name_ranks = {}
+    i = 0
+    while i < len(html_rank_names):
+        line = html_rank_names[i]
+        first_tag = line.find('<td>')
+        first_end_tag = line.find('</td>')
+        rank = line[first_tag + 4 : first_end_tag]
+        
+        second_tag = first_end_tag + 9
+        second_end_tag = line.find('</td>', second_tag)
+        name1 = line[second_tag : second_end_tag]
+        
+        third_tag = second_end_tag + 9
+        third_end_tag = len(line) - 5
+        name2 = line[third_tag : third_end_tag]
+        
+        # if the names already are in the dict, skip them because they have a larger number than what is already in the dict
+        if name1 not in name_ranks: name_ranks[name1] = rank
+        if name2 not in name_ranks: name_ranks[name2] = rank
+        i = i + 1
+    
+    year_name_ranks = []
+    year_name_ranks.append(year)
+    for name, rank in name_ranks.iteritems():
+        year_name_ranks.append(name + ' ' + rank)
+    year_name_ranks.sort()
+    return year_name_ranks
+    
 
 def main():
   # This command-line parsing code is provided.
@@ -69,10 +95,20 @@ def main():
   if args[0] == '--summaryfile':
     summary = True
     del args[0]
-
+  
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
+  if summary:
+    # iterate through each item in args and write files
+    for item in args:
+      f = open(item + '.summary', 'w')
+      file_text = f.write('\n'.join(extract_names(item)) + '\n')
+      f.close()
+  else:
+    # iterate through each item in args and print to console
+    for item in args:
+      print '\n'.join(extract_names(item)) + '\n'
   
 if __name__ == '__main__':
   main()
