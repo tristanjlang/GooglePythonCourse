@@ -50,6 +50,7 @@ def mimic_dict(filename):
     mimic = {}
     f = open(filename, 'rU')
     text = f.read()
+    f.close()
     text = text.lower()
     word_list = text.split()
     mimic[''] = [word_list[0]]
@@ -70,8 +71,8 @@ def mimic_dict(filename):
 def print_mimic(mimic_dict, word):
     """Given mimic dict and start word, prints 200 random words."""
     for count in range(0, 200):
-        word = random.choice(mimic_dict[word])
         print word
+        word = random.choice(mimic_dict[word])
 
 
 # Provided main(), calls mimic_dict() and mimic()
