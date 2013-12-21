@@ -39,22 +39,74 @@ def read_urls(filename):
     urls = []
     for path in paths:
         url = 'http://' + server + path
-        if url not in urls: urls.append(url)
-    return sorted(urls)
+        special = is_special_sortable(url)
+        if url not in urls and not special:
+            urls.append(url)
+        elif special not in urls:
+            urls.append(special)
     
-print read_urls('place_code.google.com')
-  
+    if special:
+        return [t[0] for t in sorted(urls, key = lambda t:t[1])]
+    else:
+        return sorted(urls)
+
+
+def is_special_sortable(url):
+    last_slash = url.rfind('/')
+    filename = url[last_slash + 1 : ]
+    match = re.search(r'-[\w]+-([\w]+)\.jpg', filename)
+    if match:
+        return (url, match.group(1))
+    else:
+        return False
+
 
 def download_images(img_urls, dest_dir):
-  """Given the urls already in the correct order, downloads
-  each image into the given directory.
-  Gives the images local filenames img0, img1, and so on.
-  Creates an index.html in the directory
-  with an img tag to show each local image file.
-  Creates the directory if necessary.
-  """
-  # +++your code here+++
-  
+    """Given the urls already in the correct order, downloads
+    each image into the given directory.
+    Gives the images local filenames img0, img1, and so on.
+    Creates an index.html in the directory
+    with an img tag to show each local image file.
+    Creates the directory if necessary.
+    """
+    # +++your code here+++
+    if len(dest_dir) == 0:
+        sys.stderr.write('ERROR: invalid destination directory\n')
+        sys.exit(1)
+    
+    if len(img_urls) == 0:
+        sys.stderr.write('ERROR: invalid image list\n')
+        sys.exit(1)
+    
+    # dest_dir is subdirectory of pwd
+    # set up absolute destination directory
+    pwd = os.getcwd()
+    if dest_dir[0] == '/':
+        abs_dest_dir = pwd + dest_dir
+    else:
+        abs_dest_dir = pwd + '/' + dest_dir
+    if abs_dest_dir[-1] != '/': abs_dest_dir += '/'
+        
+    # if the path doesn't exist, create it
+    if not os.path.exists(abs_dest_dir):
+        os.makedirs(abs_dest_dir)
+
+    # download files
+    count = 0
+    for img in img_urls:
+        print 'Retrieving... img' + str(count)
+        urllib.urlretrieve(img, abs_dest_dir + 'img' + str(count))
+        count += 1
+    
+    # create index.html that combines the images
+    f = open(abs_dest_dir + 'index.html', 'w')
+    f.write('<html>\n<body>\n')
+    img_line = ''
+    for i in range(0, count):
+        img_line += '<img src="' + abs_dest_dir + 'img' + str(i) + '">'
+    f.write(img_line + '\n</body>\n</html>\n')
+    f.close()
+
 
 def main():
   args = sys.argv[1:]
