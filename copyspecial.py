@@ -60,7 +60,7 @@ def copy_special_to_dir(todir, dirs):
         os.makedirs(os.path.abspath(todir))
     files = get_special_paths(dirs)
     for file in files:
-        shutil.copy(file, todir)
+        shutil.copy(file, os.path.abspath(todir))
 
 
 def copy_special_to_zip(tozip, dirs):
